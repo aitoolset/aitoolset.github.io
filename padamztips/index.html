@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Packing Shipping Boxes – Tips</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: clamp(0.9375rem, 2.5vw, 1rem);
+      line-height: 1.5;
+      color: #1a1a1a;
+      background: #b8d4e8;
+      padding: 0.75rem;
+      padding-left: max(0.75rem, env(safe-area-inset-left));
+      padding-right: max(0.75rem, env(safe-area-inset-right));
+      padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .container {
+      width: 100%;
+      max-width: 36rem;
+      margin: 0 auto;
+      background: #fff;
+      padding: 1rem 1rem;
+      padding-left: max(1rem, env(safe-area-inset-left));
+      padding-right: max(1rem, env(safe-area-inset-right));
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    h1 {
+      margin: 0 0 1rem;
+      font-size: clamp(1.25rem, 4vw + 1rem, 1.6rem);
+      font-weight: 600;
+      color: #111;
+      line-height: 1.3;
+      word-wrap: break-word;
+    }
+    .stack-card {
+      display: block;
+      width: 100%;
+      max-width: 36rem;
+      margin: 0 auto 0.875rem;
+      padding: 1rem 1rem;
+      background: #fff;
+      border-radius: 8px;
+      border-left: 4px solid #2e7db5;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      font-weight: 500;
+    }
+    @media (hover: hover) {
+      .stack-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+      }
+    }
+    .stack-card-title {
+      margin: 0 0 50px;
+      font-size: clamp(1.1rem, 3vw + 0.8rem, 1.4rem);
+      font-weight: 600;
+      color: #111;
+      text-align: center;
+    }
+    .stack-card-img {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 20px;
+      border-radius: 6px;
+    }
+    .stack-card-caption {
+      margin: 0.75rem 0 0;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      color: #333;
+    }
+    .stack-rects {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .stack-rects.row {
+      margin-bottom: 20px;
+    }
+    .stack-rects.row:last-of-type {
+      margin-bottom: 0.5rem;
+    }
+    .stack-row-divider {
+      height: 10px;
+      width: calc((7 * 60px + 6 * 10px) * 0.9);
+      max-width: 100%;
+      background: #888;
+      margin: 0.5rem 0;
+      border: none;
+    }
+    .stack-rect {
+      flex-shrink: 0;
+      width: 50px;
+      height: 70px;
+      background: #fff;
+      border: 5px solid hsl(120, 100%, 60%);
+      border-radius: 12px;
+    }
+    .stack-rect-num {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.25rem;
+    }
+    .stack-rect:nth-child(2) { border-color: yellow; }
+    .stack-rect:nth-child(3) { border-color: lightblue; }
+    .stack-rect:nth-child(5) { border-color: black; }
+    .stack-rects.row:first-of-type .stack-rect:nth-child(6) { border-color: orange; }
+    .stack-rects.row:last-of-type .stack-rect:nth-child(1) { border-color: lightblue; }
+    .stack-rects.row:last-of-type .stack-rect:nth-child(2) { border-color: orange; }
+    .stack-rects.row:last-of-type .stack-rect:nth-child(3) { border-color: hsl(120, 100%, 60%); }
+    .stack-rects.row:last-of-type .stack-rect:nth-child(4) { border-color: black; }
+    .stack-rects.row:last-of-type .stack-rect:nth-child(5) { border-color: hsl(120, 100%, 60%); }
+    .stack-rects.row:last-of-type .stack-rect:nth-child(6) { border-color: yellow; }
+    .stack-card:first-of-type .stack-rects.row:first-of-type .stack-rect:nth-child(7) { border-color: lightblue; }
+    .stack-card:first-of-type .stack-rects.row:last-of-type .stack-rect:nth-child(7) { border-color: orange; }
+    .stack-card:last-of-type .stack-rects.row:first-of-type .stack-rect:nth-child(7) { border-color: lightblue; }
+    .stack-card:last-of-type .stack-rects.row:last-of-type .stack-rect:nth-child(7) { border-color: orange; }
+    .stack2-card .stack-rects.row:nth-child(1) .stack-rect:nth-child(7) { border-color: lightblue; }
+    .stack2-card .stack-rects.row:nth-child(2) .stack-rect:nth-child(7) { border-color: orange; }
+    .tips {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .tips li {
+      display: block;
+      padding: 1rem 1rem;
+      margin-bottom: 0.875rem;
+      background: #fff;
+      border-radius: 8px;
+      border-left: 4px solid #2e7db5;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    .tips li:last-child {
+      margin-bottom: 0;
+    }
+    @media (hover: hover) {
+      .tips li:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+      }
+    }
+    .tip-en {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+    }
+    .tip-es {
+      display: block;
+      font-size: 0.9375em;
+      color: #444;
+      margin-bottom: 0.5rem;
+    }
+    @media (min-width: 480px) {
+      body {
+        padding: 1rem;
+        padding-left: max(1rem, env(safe-area-inset-left));
+        padding-right: max(1rem, env(safe-area-inset-right));
+      }
+      .container { padding: 1.5rem 1.5rem; }
+      .stack-card { padding: 1rem 1.25rem; margin-bottom: 1rem; }
+      .tips li { padding: 1rem 1.25rem; margin-bottom: 1rem; }
+    }
+    @media (min-width: 640px) {
+      body { padding: 1.5rem; }
+      .container { padding: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stack-card">
+    <h2 class="stack-card-title">Tips for Loading Bags</h2>
+    <img src="cdvpic3.png" alt="" class="stack-card-img">
+    <div class="stack-rects row" aria-hidden="true">
+      <span class="stack-rect stack-rect-num">7</span>
+      <span class="stack-rect stack-rect-num">6</span>
+      <span class="stack-rect stack-rect-num">5</span>
+      <span class="stack-rect stack-rect-num">4</span>
+      <span class="stack-rect stack-rect-num">3</span>
+      <span class="stack-rect stack-rect-num">2</span>
+      <span class="stack-rect stack-rect-num">1</span>
+    </div>
+    <div class="stack-row-divider" aria-hidden="true"></div>
+    <div class="stack-rects row" aria-hidden="true">
+      <span class="stack-rect stack-rect-num">14</span>
+      <span class="stack-rect stack-rect-num">13</span>
+      <span class="stack-rect stack-rect-num">12</span>
+      <span class="stack-rect stack-rect-num">11</span>
+      <span class="stack-rect stack-rect-num">10</span>
+      <span class="stack-rect stack-rect-num">9</span>
+      <span class="stack-rect stack-rect-num">8</span>
+    </div>
+    <p class="stack-card-caption">This standard tote order can get you 14 loaded on the left side of your CDV van ready for delivery. Make sure the shelf is extended on the left side.</p>
+  </div>
+  <div class="stack-card stack2-card">
+    <img src="cdvpic2.png" alt="" class="stack-card-img">
+    <div class="stack-rects row" aria-hidden="true">
+      <span class="stack-rect stack-rect-num">13</span>
+      <span class="stack-rect stack-rect-num">11</span>
+      <span class="stack-rect stack-rect-num">9</span>
+      <span class="stack-rect stack-rect-num">7</span>
+      <span class="stack-rect stack-rect-num">5</span>
+      <span class="stack-rect stack-rect-num">3</span>
+      <span class="stack-rect stack-rect-num">1</span>
+    </div>
+    <div class="stack-rects row" aria-hidden="true">
+      <span class="stack-rect stack-rect-num">14</span>
+      <span class="stack-rect stack-rect-num">12</span>
+      <span class="stack-rect stack-rect-num">10</span>
+      <span class="stack-rect stack-rect-num">8</span>
+      <span class="stack-rect stack-rect-num">6</span>
+      <span class="stack-rect stack-rect-num">4</span>
+      <span class="stack-rect stack-rect-num">2</span>
+    </div>
+    <p class="stack-card-caption">On a smaller non-Amazon van, this standard tote order can get you 14 loaded on the left side of your CDV van ready for delivery. There's no shelf, so stacking order saves some time.</p>
+  </div>
+  <div class="container">
+    <a href="tiplist1.html">For delivery info, tap here for the Tips page</a>
+  </div>
+</body>
+</html>

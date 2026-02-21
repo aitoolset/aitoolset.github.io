@@ -25,6 +25,35 @@
       min-height: 100vh;
       overflow-x: hidden;
     }
+    .lang-toggle {
+      position: fixed;
+      top: 0.75rem;
+      right: max(0.75rem, env(safe-area-inset-right));
+      width: 120px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #cfe7ff;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+      z-index: 1000;
+    }
+    .lang-toggle a {
+      display: block;
+      padding: 0.55rem 0.6rem;
+      text-align: center;
+      text-decoration: none;
+      font-weight: 600;
+      color: #0b2a3d;
+      line-height: 1.05;
+      user-select: none;
+    }
+    .lang-toggle a:hover {
+      background: #b9dcff;
+    }
+    .lang-toggle .divider {
+      height: 1px;
+      background: #9aa4ad;
+    }
     .container {
       width: 100%;
       max-width: 36rem;
@@ -73,6 +102,13 @@
       color: #111;
       text-align: center;
     }
+    .stack-card-subtitle {
+      margin: 20px 0;
+      font-size: clamp(1rem, 2.6vw + 0.6rem, 1.3rem);
+      font-weight: 600;
+      color: #111;
+      text-align: center;
+    }
     .stack-card-img {
       display: block;
       width: 100%;
@@ -102,7 +138,7 @@
     }
     .stack-row-divider {
       height: 10px;
-      width: calc((7 * 60px + 6 * 10px) * 0.8);
+      width: calc((7 * 60px + 6 * 10px) * 0.9);
       max-width: 100%;
       background: #888;
       margin: 0.5rem 0;
@@ -118,6 +154,10 @@
       border: 5px solid hsl(120, 100%, 60%);
       border-radius: 12px;
       box-sizing: border-box;
+    }
+    /* First card: outline-only boxes (no fill) */
+    .stack-card.no-fill .stack-rect {
+      background-color: transparent !important;
     }
     .stack-rect-num {
       display: flex;
@@ -136,12 +176,59 @@
     .stack-rects.row:last-of-type .stack-rect:nth-child(4) { border-color: black; }
     .stack-rects.row:last-of-type .stack-rect:nth-child(5) { border-color: hsl(120, 100%, 60%); }
     .stack-rects.row:last-of-type .stack-rect:nth-child(6) { border-color: yellow; }
-    .stack-card:first-of-type .stack-rects.row:first-of-type .stack-rect:nth-child(7) { border-color: lightblue; }
-    .stack-card:first-of-type .stack-rects.row:last-of-type .stack-rect:nth-child(7) { border-color: orange; }
-    .stack-card:last-of-type .stack-rects.row:first-of-type .stack-rect:nth-child(7) { border-color: lightblue; }
-    .stack-card:last-of-type .stack-rects.row:last-of-type .stack-rect:nth-child(7) { border-color: orange; }
-    .stack2-card .stack-rects.row:nth-child(1) .stack-rect:nth-child(7) { border-color: lightblue; }
-    .stack2-card .stack-rects.row:nth-child(2) .stack-rect:nth-child(7) { border-color: orange; }
+    .stack-card:not(.stack2-card) .stack-rects.row:first-of-type .stack-rect:nth-child(7) { border-color: lightblue; }
+    .stack-card:not(.stack2-card) .stack-rects.row:last-of-type .stack-rect:nth-child(7) { border-color: orange; }
+    .stack-card:last-of-type:not(.stack2-card) .stack-rects.row:first-of-type .stack-rect:nth-child(7) { border-color: lightblue; }
+    .stack-card:last-of-type:not(.stack2-card) .stack-rects.row:last-of-type .stack-rect:nth-child(7) { border-color: orange; }
+    .stack2-card .stack-rects.row:first-of-type .stack-rect:nth-child(7) { border-color: lightblue !important; }
+    .stack2-card .stack-rects.row:last-of-type .stack-rect:nth-child(7) { border-color: orange; }
+    /* 2nd card (16+): 3rd row uses a mixed/random palette */
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(1) { border-color: orange; }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(2) { border-color: black; }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(3) { border-color: lightblue; }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(4) { border-color: yellow; }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(5) { border-color: hsl(120, 100%, 60%); }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(6) { border-color: orange; }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(7) { border-color: lightblue; }
+    .stack-card.card-16plus .stack-rects.row:nth-of-type(2) .stack-rect:nth-child(3) { border-color: orange; }
+    /* 2nd card (16+): fill rows 1–3 with 60% of each box color */
+    .stack-card.card-16plus .stack-rects.row:nth-of-type(-n+3) .stack-rect {
+      background-color: hsla(120, 100%, 60%, 0.6);
+    }
+    .stack-card.card-16plus .stack-rects.row:nth-of-type(-n+2) .stack-rect:nth-child(2) {
+      background-color: hsla(60, 100%, 50%, 0.6);
+    }
+    .stack-card.card-16plus .stack-rects.row:nth-of-type(-n+2) .stack-rect:nth-child(3) {
+      background-color: rgba(173, 216, 230, 0.6);
+    }
+    .stack-card.card-16plus .stack-rects.row:nth-of-type(-n+2) .stack-rect:nth-child(5) {
+      background-color: rgba(0, 0, 0, 0.6);
+      color: #fff;
+    }
+    .stack-card.card-16plus .stack-rects.row:nth-of-type(1) .stack-rect:nth-child(6) {
+      background-color: rgba(255, 165, 0, 0.6);
+    }
+    .stack-card.card-16plus .stack-rects.row:nth-of-type(1) .stack-rect:nth-child(7) {
+      background-color: rgba(173, 216, 230, 0.6);
+    }
+    .stack-card.card-16plus .stack-rects.row:nth-of-type(2) .stack-rect:nth-child(3) {
+      background-color: rgba(255, 165, 0, 0.6);
+    }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(1) { background-color: rgba(255, 165, 0, 0.6); }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(2) { background-color: rgba(0, 0, 0, 0.6); color: #fff; }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(3) { background-color: rgba(173, 216, 230, 0.6); }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(4) { background-color: hsla(60, 100%, 50%, 0.6); }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(5) { background-color: hsla(120, 100%, 60%, 0.6); }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(6) { background-color: rgba(255, 165, 0, 0.6); }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(7) { background-color: rgba(173, 216, 230, 0.6); }
+    /* 2nd card (16+): 4th row (under caption) fixed palette order */
+    .stack-card.card-16plus .post-caption-row .stack-rect:nth-child(1) { border-color: hsl(120, 100%, 60%); }
+    .stack-card.card-16plus .post-caption-row .stack-rect:nth-child(2) { border-color: yellow; }
+    .stack-card.card-16plus .post-caption-row .stack-rect:nth-child(3) { border-color: lightblue; }
+    .stack-card.card-16plus .post-caption-row .stack-rect:nth-child(4) { border-color: hsl(120, 100%, 60%); }
+    .stack-card.card-16plus .post-caption-row .stack-rect:nth-child(5) { border-color: black; }
+    .stack-card.card-16plus .post-caption-row .stack-rect:nth-child(6) { border-color: orange; }
+    .stack-card.card-16plus .stack-rects.row.post-caption-row .stack-rect:nth-child(7) { border-color: lightblue !important; }
     .tips {
       list-style: none;
       padding: 0;
@@ -201,9 +288,15 @@
   </style>
 </head>
 <body>
-  <div class="stack-card">
+  <div class="lang-toggle" aria-label="Language toggle">
+    <a href="loadtipsspan.html">Espanol</a>
+    <div class="divider" aria-hidden="true"></div>
+    <a href="index.html">English</a>
+  </div>
+  <div class="stack-card no-fill">
     <h2 class="stack-card-title">Tips for Loading Bags</h2>
     <img src="cdvpic3.png" alt="" class="stack-card-img">
+    <h2 class="stack-card-subtitle">Left-Side Inside Van View</h2>
     <div class="stack-rects row" aria-hidden="true">
       <span class="stack-rect stack-rect-num">7</span>
       <span class="stack-rect stack-rect-num">6</span>
@@ -223,10 +316,55 @@
       <span class="stack-rect stack-rect-num">9</span>
       <span class="stack-rect stack-rect-num">8</span>
     </div>
-    <p class="stack-card-caption">This standard tote order can get you 14 loaded on the left side of your CDV van ready for delivery. Make sure the shelf is extended on the left side.</p>
+    <p class="stack-card-caption">This standard tote order can get you 14 loaded on the left side of your CDV van ready for delivery. A 15th and 16th bag can go along the right side with overflow boxes. Make sure the shelf is extended on the left side.</p>
+  </div>
+  <div class="stack-card card-16plus">
+    <h2 class="stack-card-title">Tips for Loading Bags - 16 or more</h2>
+    <img src="cdvpic3.png" alt="" class="stack-card-img">
+    <h2 class="stack-card-subtitle">Left-Side Inside Van View</h2>
+    <div class="stack-rects row" aria-hidden="true">
+      <span class="stack-rect stack-rect-num">19</span>
+      <span class="stack-rect stack-rect-num">16</span>
+      <span class="stack-rect stack-rect-num">13</span>
+      <span class="stack-rect stack-rect-num">10</span>
+      <span class="stack-rect stack-rect-num">7</span>
+      <span class="stack-rect stack-rect-num">4</span>
+      <span class="stack-rect stack-rect-num">1</span>
+    </div>
+    <div class="stack-rects row" aria-hidden="true">
+      <span class="stack-rect stack-rect-num">20</span>
+      <span class="stack-rect stack-rect-num">17</span>
+      <span class="stack-rect stack-rect-num">14</span>
+      <span class="stack-rect stack-rect-num">11</span>
+      <span class="stack-rect stack-rect-num">8</span>
+      <span class="stack-rect stack-rect-num">5</span>
+      <span class="stack-rect stack-rect-num">2</span>
+    </div>
+    <div class="stack-rects row random-row" aria-hidden="true">
+      <span class="stack-rect stack-rect-num">21</span>
+      <span class="stack-rect stack-rect-num">18</span>
+      <span class="stack-rect stack-rect-num">15</span>
+      <span class="stack-rect stack-rect-num">12</span>
+      <span class="stack-rect stack-rect-num">9</span>
+      <span class="stack-rect stack-rect-num">6</span>
+      <span class="stack-rect stack-rect-num">3</span>
+    </div>
+    <p class="stack-card-caption">This tote order can get you 21 loaded on the on left side of your CDV van ready for delivery. Make sure the shelf the left side is folded up.</p>
+    <h2 class="stack-card-subtitle">Top View Inside Van</h2>
+    <div class="stack-rects row post-caption-row" aria-hidden="true">
+      <span class="stack-rect stack-rect-num">19</span>
+      <span class="stack-rect stack-rect-num">16</span>
+      <span class="stack-rect stack-rect-num">13</span>
+      <span class="stack-rect stack-rect-num">10</span>
+      <span class="stack-rect stack-rect-num">7</span>
+      <span class="stack-rect stack-rect-num">4</span>
+      <span class="stack-rect stack-rect-num">1</span>
+    </div>
   </div>
   <div class="stack-card stack2-card">
+    <h2 class="stack-card-title">Tips for Loading Bags - Cargo Vans</h2>
     <img src="cdvpic2.png" alt="" class="stack-card-img">
+    <h2 class="stack-card-subtitle">Left-Side Inside Van View</h2>
     <div class="stack-rects row" aria-hidden="true">
       <span class="stack-rect stack-rect-num">13</span>
       <span class="stack-rect stack-rect-num">11</span>
@@ -245,7 +383,7 @@
       <span class="stack-rect stack-rect-num">4</span>
       <span class="stack-rect stack-rect-num">2</span>
     </div>
-    <p class="stack-card-caption">On a smaller non-Amazon van, this standard tote order can get you 14 loaded on the left side of your CDV van ready for delivery. There's no shelf, so stacking order saves some time.</p>
+    <p class="stack-card-caption">On a smaller non-Amazon van, this standard tote order can get you 14 loaded on the left side of your CDV van ready for delivery.  A 15th and 16th bag can go along the right side with overflow boxes. There's no shelf, so stacking order saves some time.</p>
   </div>
   <div class="container">
     <a href="tiplist1.html">For delivery info, tap here for the Tips page</a>

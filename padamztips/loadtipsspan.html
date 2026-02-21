@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Consejos para cargar bolsas</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: clamp(0.9375rem, 2.5vw, 1rem);
+      line-height: 1.5;
+      color: #1a1a1a;
+      background: #b8d4e8;
+      padding: 0.75rem;
+      padding-left: max(0.75rem, env(safe-area-inset-left));
+      padding-right: max(0.75rem, env(safe-area-inset-right));
+      padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .lang-toggle {
+      position: fixed;
+      top: 0.75rem;
+      right: max(0.75rem, env(safe-area-inset-right));
+      width: 120px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #cfe7ff;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+      z-index: 1000;
+    }
+    .lang-toggle a {
+      display: block;
+      padding: 0.55rem 0.6rem;
+      text-align: center;
+      text-decoration: none;
+      font-weight: 600;
+      color: #0b2a3d;
+      line-height: 1.05;
+      user-select: none;
+    }
+    .lang-toggle a:hover {
+      background: #b9dcff;
+    }
+    .lang-toggle .divider {
+      height: 1px;
+      background: #9aa4ad;
+    }
+    .container {
+      width: 100%;
+      max-width: 36rem;
+      margin: 0 auto;
+      background: #fff;
+      padding: 1rem 1rem;
+      padding-left: max(1rem, env(safe-area-inset-left));
+      padding-right: max(1rem, env(safe-area-inset-right));
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    h1 {
+      margin: 0 0 1rem;
+      font-size: clamp(1.25rem, 4vw + 1rem, 1.6rem);
+      font-weight: 600;
+      color: #111;
+      line-height: 1.3;
+      word-wrap: break-word;
+    }
+    .stack-card {
+      display: block;
+      width: 100%;
+      max-width: 36rem;
+      margin: 0 auto 0.875rem;
+      padding: 1rem 1rem;
+      background: #fff;
+      border-radius: 8px;
+      border-left: 4px solid #2e7db5;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      font-weight: 500;
+      overflow: hidden;
+    }
+    @media (hover: hover) {
+      .stack-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+      }
+    }
+    .stack-card-title {
+      margin: 0 0 50px;
+      font-size: clamp(1.1rem, 3vw + 0.8rem, 1.4rem);
+      font-weight: 600;
+      color: #111;
+      text-align: center;
+    }
+    .stack-card-subtitle {
+      margin: 20px 0;
+      font-size: clamp(1rem, 2.6vw + 0.6rem, 1.3rem);
+      font-weight: 600;
+      color: #111;
+      text-align: center;
+    }
+    .stack-card-img {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 20px;
+      border-radius: 6px;
+    }
+    .stack-card-caption {
+      margin: 0.75rem 0 0;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      color: #333;
+    }
+    .stack-rects {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      min-width: 0;
+    }
+    .stack-rects.row {
+      margin-bottom: 20px;
+    }
+    .stack-rects.row:last-of-type {
+      margin-bottom: 0.5rem;
+    }
+    .stack-row-divider {
+      height: 10px;
+      width: calc((7 * 60px + 6 * 10px) * 0.8);
+      max-width: 100%;
+      background: #888;
+      margin: 0.5rem 0;
+      border: none;
+    }
+    .stack-rect {
+      flex: 1 1 0;
+      min-width: 0;
+      max-width: 50px;
+      aspect-ratio: 5 / 7;
+      height: auto;
+      background: #fff;
+      border: 5px solid hsl(120, 100%, 60%);
+      border-radius: 12px;
+      box-sizing: border-box;
+    }
+    /* Primera tarjeta: solo contorno (sin relleno) */
+    .stack-card.no-fill .stack-rect {
+      background-color: transparent !important;
+    }
+    .stack-rect-num {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: clamp(0.75rem, 2.5vw, 1.25rem);
+    }
+    .stack-rect:nth-child(2) { border-color: yellow; }
+    .stack-rect:nth-child(3) { border-color: lightblue; }
+    .stack-rect:nth-child(5) { border-color: black; }
+    .stack-rects.row:first-of-type .stack-rect:nth-child(6) { border-color: orange; }
+    .stack-rects.row:last-of-type .stack-rect:nth-child(1) { border-color: lightblue; }
+    .stack-rects.row:last-of-type .stack-rect:nth-child(2) { border-color: orange; }
+    .stack-rects.row:last-of-type .stack-rect:nth-child(3) { border-color: hsl(120, 100%, 60%); }
+    .stack-rects.row:last-of-type .stack-rect:nth-child(4) { border-color: black; }
+    .stack-rects.row:last-of-type .stack-rect:nth-child(5) { border-color: hsl(120, 100%, 60%); }
+    .stack-rects.row:last-of-type .stack-rect:nth-child(6) { border-color: yellow; }
+    .stack-card:not(.stack2-card) .stack-rects.row:first-of-type .stack-rect:nth-child(7) { border-color: lightblue; }
+    .stack-card:not(.stack2-card) .stack-rects.row:last-of-type .stack-rect:nth-child(7) { border-color: orange; }
+    .stack-card:last-of-type:not(.stack2-card) .stack-rects.row:first-of-type .stack-rect:nth-child(7) { border-color: lightblue; }
+    .stack-card:last-of-type:not(.stack2-card) .stack-rects.row:last-of-type .stack-rect:nth-child(7) { border-color: orange; }
+    .stack2-card .stack-rects.row:first-of-type .stack-rect:nth-child(7) { border-color: lightblue !important; }
+    .stack2-card .stack-rects.row:last-of-type .stack-rect:nth-child(7) { border-color: orange; }
+    /* 2nd card (16+): 3rd row uses a mixed/random palette */
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(1) { border-color: orange; }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(2) { border-color: black; }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(3) { border-color: lightblue; }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(4) { border-color: yellow; }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(5) { border-color: hsl(120, 100%, 60%); }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(6) { border-color: orange; }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(7) { border-color: lightblue; }
+    .stack-card.card-16plus .stack-rects.row:nth-of-type(2) .stack-rect:nth-child(3) { border-color: orange; }
+    /* 2nd card (16+): fill rows 1–3 with 60% of each box color */
+    .stack-card.card-16plus .stack-rects.row:nth-of-type(-n+3) .stack-rect {
+      background-color: hsla(120, 100%, 60%, 0.6);
+    }
+    .stack-card.card-16plus .stack-rects.row:nth-of-type(-n+2) .stack-rect:nth-child(2) {
+      background-color: hsla(60, 100%, 50%, 0.6);
+    }
+    .stack-card.card-16plus .stack-rects.row:nth-of-type(-n+2) .stack-rect:nth-child(3) {
+      background-color: rgba(173, 216, 230, 0.6);
+    }
+    .stack-card.card-16plus .stack-rects.row:nth-of-type(-n+2) .stack-rect:nth-child(5) {
+      background-color: rgba(0, 0, 0, 0.6);
+      color: #fff;
+    }
+    .stack-card.card-16plus .stack-rects.row:nth-of-type(1) .stack-rect:nth-child(6) {
+      background-color: rgba(255, 165, 0, 0.6);
+    }
+    .stack-card.card-16plus .stack-rects.row:nth-of-type(1) .stack-rect:nth-child(7) {
+      background-color: rgba(173, 216, 230, 0.6);
+    }
+    .stack-card.card-16plus .stack-rects.row:nth-of-type(2) .stack-rect:nth-child(3) {
+      background-color: rgba(255, 165, 0, 0.6);
+    }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(1) { background-color: rgba(255, 165, 0, 0.6); }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(2) { background-color: rgba(0, 0, 0, 0.6); color: #fff; }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(3) { background-color: rgba(173, 216, 230, 0.6); }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(4) { background-color: hsla(60, 100%, 50%, 0.6); }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(5) { background-color: hsla(120, 100%, 60%, 0.6); }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(6) { background-color: rgba(255, 165, 0, 0.6); }
+    .stack-card.card-16plus .stack-rects.random-row .stack-rect:nth-child(7) { background-color: rgba(173, 216, 230, 0.6); }
+    /* 2nd card (16+): 4th row (under caption) fixed palette order */
+    .stack-card.card-16plus .post-caption-row .stack-rect:nth-child(1) { border-color: hsl(120, 100%, 60%); }
+    .stack-card.card-16plus .post-caption-row .stack-rect:nth-child(2) { border-color: yellow; }
+    .stack-card.card-16plus .post-caption-row .stack-rect:nth-child(3) { border-color: lightblue; }
+    .stack-card.card-16plus .post-caption-row .stack-rect:nth-child(4) { border-color: hsl(120, 100%, 60%); }
+    .stack-card.card-16plus .post-caption-row .stack-rect:nth-child(5) { border-color: black; }
+    .stack-card.card-16plus .post-caption-row .stack-rect:nth-child(6) { border-color: orange; }
+    .stack-card.card-16plus .stack-rects.row.post-caption-row .stack-rect:nth-child(7) { border-color: lightblue !important; }
+    .tips {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .tips li {
+      display: block;
+      padding: 1rem 1rem;
+      margin-bottom: 0.875rem;
+      background: #fff;
+      border-radius: 8px;
+      border-left: 4px solid #2e7db5;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    .tips li:last-child {
+      margin-bottom: 0;
+    }
+    @media (hover: hover) {
+      .tips li:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+      }
+    }
+    .tip-en {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+    }
+    .tip-es {
+      display: block;
+      font-size: 0.9375em;
+      color: #444;
+      margin-bottom: 0.5rem;
+    }
+    @media (max-width: 380px) {
+      .stack-rects { gap: 4px; }
+      .stack-rect { border-width: 3px; }
+      .stack-rect-num { font-size: 0.7rem; }
+    }
+    @media (min-width: 480px) {
+      body {
+        padding: 1rem;
+        padding-left: max(1rem, env(safe-area-inset-left));
+        padding-right: max(1rem, env(safe-area-inset-right));
+      }
+      .container { padding: 1.5rem 1.5rem; }
+      .stack-card { padding: 1rem 1.25rem; margin-bottom: 1rem; }
+      .tips li { padding: 1rem 1.25rem; margin-bottom: 1rem; }
+    }
+    @media (min-width: 640px) {
+      body { padding: 1.5rem; }
+      .container { padding: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="lang-toggle" aria-label="Selector de idioma">
+    <a href="loadtipsspan.html">Espanol</a>
+    <div class="divider" aria-hidden="true"></div>
+    <a href="index.html">English</a>
+  </div>
+  <div class="stack-card no-fill">
+    <h2 class="stack-card-title">Consejos para cargar bolsas</h2>
+    <img src="cdvpic3.png" alt="" class="stack-card-img">
+    <div class="stack-rects row" aria-hidden="true">
+      <span class="stack-rect stack-rect-num">7</span>
+      <span class="stack-rect stack-rect-num">6</span>
+      <span class="stack-rect stack-rect-num">5</span>
+      <span class="stack-rect stack-rect-num">4</span>
+      <span class="stack-rect stack-rect-num">3</span>
+      <span class="stack-rect stack-rect-num">2</span>
+      <span class="stack-rect stack-rect-num">1</span>
+    </div>
+    <div class="stack-row-divider" aria-hidden="true"></div>
+    <div class="stack-rects row" aria-hidden="true">
+      <span class="stack-rect stack-rect-num">14</span>
+      <span class="stack-rect stack-rect-num">13</span>
+      <span class="stack-rect stack-rect-num">12</span>
+      <span class="stack-rect stack-rect-num">11</span>
+      <span class="stack-rect stack-rect-num">10</span>
+      <span class="stack-rect stack-rect-num">9</span>
+      <span class="stack-rect stack-rect-num">8</span>
+    </div>
+    <p class="stack-card-caption">Este orden estándar de totes puede permitirte cargar 14 en el lado izquierdo de tu van CDV lista para la entrega. La bolsa número 15 y 16 pueden ir a lo largo del lado derecho con cajas de desbordamiento. Asegúrate de que el estante esté extendido en el lado izquierdo.</p>
+  </div>
+
+  <div class="stack-card card-16plus">
+    <h2 class="stack-card-title">Consejos para cargar bolsas - 16 o más</h2>
+    <img src="cdvpic3.png" alt="" class="stack-card-img">
+    <h2 class="stack-card-subtitle">Vista del lado izquierdo dentro de la camioneta</h2>
+    <div class="stack-rects row" aria-hidden="true">
+      <span class="stack-rect stack-rect-num">19</span>
+      <span class="stack-rect stack-rect-num">16</span>
+      <span class="stack-rect stack-rect-num">13</span>
+      <span class="stack-rect stack-rect-num">10</span>
+      <span class="stack-rect stack-rect-num">7</span>
+      <span class="stack-rect stack-rect-num">4</span>
+      <span class="stack-rect stack-rect-num">1</span>
+    </div>
+    <div class="stack-rects row" aria-hidden="true">
+      <span class="stack-rect stack-rect-num">20</span>
+      <span class="stack-rect stack-rect-num">17</span>
+      <span class="stack-rect stack-rect-num">14</span>
+      <span class="stack-rect stack-rect-num">11</span>
+      <span class="stack-rect stack-rect-num">8</span>
+      <span class="stack-rect stack-rect-num">5</span>
+      <span class="stack-rect stack-rect-num">2</span>
+    </div>
+    <div class="stack-rects row random-row" aria-hidden="true">
+      <span class="stack-rect stack-rect-num">21</span>
+      <span class="stack-rect stack-rect-num">18</span>
+      <span class="stack-rect stack-rect-num">15</span>
+      <span class="stack-rect stack-rect-num">12</span>
+      <span class="stack-rect stack-rect-num">9</span>
+      <span class="stack-rect stack-rect-num">6</span>
+      <span class="stack-rect stack-rect-num">3</span>
+    </div>
+    <h2 class="stack-card-subtitle">Vista lateral izquierda dentro de la camioneta</h2>
+    <p class="stack-card-caption">Este orden de totes puede permitirte cargar 21 en el lado izquierdo de tu van CDV lista para la entrega. Asegúrate de que el estante del lado izquierdo esté plegado hacia arriba.</p>
+    <h2 class="stack-card-subtitle">Vista superior dentro de la camioneta</h2>
+    <div class="stack-rects row post-caption-row" aria-hidden="true">
+      <span class="stack-rect stack-rect-num">19</span>
+      <span class="stack-rect stack-rect-num">16</span>
+      <span class="stack-rect stack-rect-num">13</span>
+      <span class="stack-rect stack-rect-num">10</span>
+      <span class="stack-rect stack-rect-num">7</span>
+      <span class="stack-rect stack-rect-num">4</span>
+      <span class="stack-rect stack-rect-num">1</span>
+    </div>
+  </div>
+
+  <div class="stack-card stack2-card">
+    <img src="cdvpic2.png" alt="" class="stack-card-img">
+    <div class="stack-rects row" aria-hidden="true">
+      <span class="stack-rect stack-rect-num">13</span>
+      <span class="stack-rect stack-rect-num">11</span>
+      <span class="stack-rect stack-rect-num">9</span>
+      <span class="stack-rect stack-rect-num">7</span>
+      <span class="stack-rect stack-rect-num">5</span>
+      <span class="stack-rect stack-rect-num">3</span>
+      <span class="stack-rect stack-rect-num">1</span>
+    </div>
+    <div class="stack-rects row" aria-hidden="true">
+      <span class="stack-rect stack-rect-num">14</span>
+      <span class="stack-rect stack-rect-num">12</span>
+      <span class="stack-rect stack-rect-num">10</span>
+      <span class="stack-rect stack-rect-num">8</span>
+      <span class="stack-rect stack-rect-num">6</span>
+      <span class="stack-rect stack-rect-num">4</span>
+      <span class="stack-rect stack-rect-num">2</span>
+    </div>
+    <p class="stack-card-caption">En una van más pequeña que no es de Amazon, este orden estándar de totes puede permitirte cargar 14 en el lado izquierdo de tu van CDV lista para la entrega. La bolsa número 15 y 16 pueden ir a lo largo del lado derecho con cajas de desbordamiento. No hay estante, así que el orden de apilado ahorra algo de tiempo.</p>
+  </div>
+
+  <div class="container">
+    <a href="tiplist1.html">Para información de entrega, toca aquí para la página de consejos</a>
+  </div>
+</body>
+</html>
